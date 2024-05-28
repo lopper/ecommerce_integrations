@@ -22,6 +22,15 @@ frappe.ui.form.on("Zencart Setting", {
 				integration: "zencart",
 			});
 		});
+		frm.add_custom_button(__("Import Old Olders"), () => {
+			frappe.call({
+				method: "ecommerce_integrations.zencart.order.sync_old_orders",
+				callback: function (r) {
+					// show  r.message
+					frappe.msgprint(r.message);
+				},
+			});
+		});
 		frm.trigger("setup_queries");
 	},
 
