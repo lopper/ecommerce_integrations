@@ -104,7 +104,6 @@ def create_sales_order(zencart_order, setting, company=None):
 				"taxes": taxes
  			}
 		)
-		print(so)
 		if company:
 			so.update({"company": company, "status": "Draft"})
 		so.flags.ignore_mandatory = True
