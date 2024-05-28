@@ -165,7 +165,6 @@
     "fieldname": "last_sync_date",
     "fieldtype": "Data",
     "label": "Last Sync Date/Time",
-    "mandatory_depends_on": "eval:doc.enable_zencart",
     "read_only": 1
  },
   {
