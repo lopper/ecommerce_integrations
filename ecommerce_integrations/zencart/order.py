@@ -214,6 +214,7 @@ def get_sales_order(order_id):
 	if sales_order:
 		return frappe.get_doc("Sales Order", sales_order)
 
+@frappe.whitelist()
 def sync_recent_orders():
 	zencart_setting = frappe.get_cached_doc(SETTING_DOCTYPE)
 	
@@ -234,6 +235,7 @@ def sync_recent_orders():
 	zencart_setting.last_sync_date = now
 	zencart_setting.save()
 
+@frappe.whitelist()
 def sync_old_orders():
 	zencart_setting = frappe.get_cached_doc(SETTING_DOCTYPE)
 	if not cint(zencart_setting.sync_old_orders):
