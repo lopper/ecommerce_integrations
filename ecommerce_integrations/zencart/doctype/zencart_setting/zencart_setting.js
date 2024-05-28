@@ -3,7 +3,7 @@
 
 frappe.provide("ecommerce_integrations.zencart.zencart_setting");
 
-frappe.ui.form.on("zencart Setting", {
+frappe.ui.form.on("Zencart Setting", {
 	onload: function (frm) {
 		frappe.call({
 			method: "ecommerce_integrations.utils.naming_series.get_series",
@@ -15,20 +15,8 @@ frappe.ui.form.on("zencart Setting", {
 		});
 	},
 
-	fetch_zencart_locations: function (frm) {
-		frappe.call({
-			doc: frm.doc,
-			method: "update_location_table",
-			callback: (r) => {
-				if (!r.exc) refresh_field("zencart_warehouse_mapping");
-			},
-		});
-	},
-
 	refresh: function (frm) {
-		frm.add_custom_button(__("Import Products"), function () {
-			frappe.set_route("zencart-import-products");
-		});
+
 		frm.add_custom_button(__("View Logs"), () => {
 			frappe.set_route("List", "Ecommerce Integration Log", {
 				integration: "zencart",
@@ -38,21 +26,6 @@ frappe.ui.form.on("zencart Setting", {
 	},
 
 	setup_queries: function (frm) {
-		const warehouse_query = () => {
-			return {
-				filters: {
-					company: frm.doc.company,
-					is_group: 0,
-					disabled: 0,
-				},
-			};
-		};
-		frm.set_query("warehouse", warehouse_query);
-		frm.set_query(
-			"erpnext_warehouse",
-			"zencart_warehouse_mapping",
-			warehouse_query
-		);
 
 		frm.set_query("price_list", () => {
 			return {

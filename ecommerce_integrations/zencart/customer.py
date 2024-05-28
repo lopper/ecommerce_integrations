@@ -21,10 +21,10 @@ class ZencartCustomer(EcommerceCustomer):
 		"""Create Customer in ERPNext using zencart's Customer dict."""
 
 		customer_name = customer.get("company")
+		customer_group = self.setting.customer_group
 		if len(customer_name.strip()) == 0:
 			customer_name = customer.get("name")
-
-		customer_group = self.setting.customer_group
+		
 		super().sync_customer(customer_name, customer_group)
 
 		billing_address = customer.get("billing_address", {})
@@ -49,7 +49,7 @@ class ZencartCustomer(EcommerceCustomer):
 		email: Optional[str] = None,
 	) -> None:
 		"""Create customer address(es) using Customer dict provided by zencart."""
-		address_fields = _map_address_fields(zencart_address, customer_name, address_type, email)
+		address_fields = _map_address_fields(zencart_address, customer_name, address_type)
 		super().create_customer_address(address_fields)
 
 	def update_existing_addresses(self, customer):
@@ -74,10 +74,10 @@ class ZencartCustomer(EcommerceCustomer):
 		old_address = self.get_customer_address_doc(address_type)
 
 		if not old_address:
-			self.create_customer_address(customer_name, zencart_address, address_type, email)
+			self.create_customer_address(customer_name, zencart_address, address_type)
 		else:
 			exclude_in_update = ["address_title", "address_type"]
-			new_values = _map_address_fields(zencart_address, customer_name, address_type, email)
+			new_values = _map_address_fields(zencart_address, customer_name, address_type)
 
 			old_address.update({k: v for k, v in new_values.items() if k not in exclude_in_update})
 			old_address.flags.ignore_mandatory = True
@@ -90,7 +90,7 @@ class ZencartCustomer(EcommerceCustomer):
 
 		contact_fields = {
 			"status": "Passive",
-			"first_name": zencart_customer.get("name")
+			"first_name": zencart_customer.get("name"),
 			"company_name": zencart_customer.get("company")
 			#"last_name": zencart_customer.get("last_name"),
 		}
@@ -108,7 +108,7 @@ def _map_address_fields(zencart_address, customer_name, address_type):
 	address_fields = {
 		"address_title": zencart_address.get("name") or customer_name,
 		"address_type": address_type,
-		"address_line1": zencart_address.get("street_address")
+		"address_line1": zencart_address.get("street_address"),
 		#"address_line2": zencart_address.get("address2"),
 		"city": zencart_address.get("city"),
 		"county" : zencart_address.get("suburb"),

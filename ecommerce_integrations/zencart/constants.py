@@ -12,13 +12,13 @@ WEBHOOK_EVENTS = [
 ]
 
 EVENT_MAPPER = {
-
+	"orders/create": "ecommerce_integrations.zencart.order.sync_sales_order"
 }
 
 
 # custom fields
 
-CUSTOMER_ID_FIELD = "customer_id"
-ORDER_ID_FIELD = "order_id"
+CUSTOMER_ID_FIELD = "zencart_customer_id"
+ORDER_ID_FIELD = "zencart_order_id"
 
 # ERPNext already defines the default UOMs from Shopify but names are different

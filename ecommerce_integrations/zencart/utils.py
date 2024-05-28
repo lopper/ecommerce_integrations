@@ -8,7 +8,6 @@ from ecommerce_integrations.ecommerce_integrations.doctype.ecommerce_integration
 )
 from ecommerce_integrations.zencart.constants import (
 	MODULE_NAME,
-	OLD_SETTINGS_DOCTYPE,
 	SETTING_DOCTYPE,
 )
 

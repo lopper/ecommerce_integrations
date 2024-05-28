@@ -46,17 +46,5 @@ def create_tax_account():
 		or "Duties and Taxes - WP"
 	)
 
-	frappe.get_doc(
-		{
-			"doctype": "Account",
-			"account_name": account_name,
-			"is_group": 0,
-			"company": company,
-			"root_type": "Liability",
-			"report_type": "Balance Sheet",
-			"account_currency": "INR",
-			"parent_account": parent,
-			"account_type": "Tax",
-			"tax_rate": 18,
-		}
-	).insert()
+	
+	

@@ -4,7 +4,6 @@ from frappe.utils import cint, cstr, getdate, nowdate
 
 from ecommerce_integrations.zencart.constants import (
 	ORDER_ID_FIELD,
-	ORDER_NUMBER_FIELD,
 	SETTING_DOCTYPE,
 )
 from ecommerce_integrations.zencart.utils import create_zencart_log
@@ -32,22 +31,19 @@ def prepare_sales_invoice(payload, request_id=None):
 
 def create_sales_invoice(zencart_order, setting, so):
 	if (
-		not frappe.db.get_value("Sales Invoice", {ORDER_ID_FIELD: zencart_order.get("id")}, "name")
+		not frappe.db.get_value("Sales Invoice", {ORDER_ID_FIELD: zencart_order.get("order_id")}, "name")
 		and so.docstatus == 1
 		and not so.per_billed
-		and cint(setting.sync_sales_invoice)
 	):
-
 		posting_date = getdate(zencart_order.get("date_purchased")) or nowdate()
-
 		sales_invoice = make_sales_invoice(so.name, ignore_permissions=True)
-		sales_invoice.set(ORDER_ID_FIELD, str(zencart_order.get("id")))
+		sales_invoice.set(ORDER_ID_FIELD, str(zencart_order.get("order_id")))
 		sales_invoice.set_posting_time = 1
 		sales_invoice.posting_date = posting_date
 		sales_invoice.due_date = posting_date
-		sales_invoice.naming_series = setting.sales_invoice_series or "SI-Zencart-"
+		sales_invoice.naming_series =   setting.sales_invoice_series or "SI-Zencart-"
+		#sales_invoice.naming_series = setting.sales_invoice_series or "SI-Zencart-"
 		sales_invoice.flags.ignore_mandatory = True
-		set_cost_center(sales_invoice.items, setting.cost_center)
 		sales_invoice.insert(ignore_mandatory=True)
 		sales_invoice.submit()
 		if sales_invoice.grand_total > 0:

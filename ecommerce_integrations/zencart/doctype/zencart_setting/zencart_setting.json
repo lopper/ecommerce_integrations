@@ -22,6 +22,8 @@
   "column_break_19",
   "cost_center",
   "section_break_25",
+  "sales_order_series",
+  "sales_invoice_series",
   "shipping_item",
   "column_break_27",
   "sync_sales_invoice",
@@ -68,11 +70,11 @@
    "label": "Authentication Details"
   },
   {
-   "description": "eg: frappe.myzencart.com",
+   "description": "eg: https://frappe.myzencart.com/export_sales_order.php",
    "fieldname": "zencart_url",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Shop URL",
+   "label": "Zencart Export Sales Order Url",
    "mandatory_depends_on": "eval:doc.enable_zencart"
   },
   {
@@ -81,7 +83,7 @@
   },
   {
    "fieldname": "password",
-   "fieldtype": "Password",
+   "fieldtype": "Data",
    "label": "Password / Access Token",
    "mandatory_depends_on": "eval:doc.enable_zencart"
   },
@@ -107,13 +109,7 @@
    "mandatory_depends_on": "eval:doc.enable_zencart",
    "options": "Warehouse"
   },
-  {
-   "description": "If zencart does not have a customer in the order, then while syncing the orders, the system will consider the default customer for the order",
-   "fieldname": "default_customer",
-   "fieldtype": "Link",
-   "label": "Default Customer",
-   "options": "Customer"
-  },
+
   {
    "fieldname": "column_break_14",
    "fieldtype": "Column Break"
@@ -153,8 +149,25 @@
    "fieldtype": "Section Break",
    "label": "Order Sync Settings"
   },
-
-
+  {
+    "fieldname": "sales_order_series",
+    "fieldtype": "Select",
+    "label": "Sales Order Series",
+    "mandatory_depends_on": "eval:doc.enable_zencart"
+ },
+ {
+    "fieldname": "sales_invoice_series",
+    "fieldtype": "Select",
+    "label": "Sales Invoice Series",
+    "mandatory_depends_on": "eval:doc.enable_zencart"
+ },
+ {
+    "fieldname": "last_sync_date",
+    "fieldtype": "Data",
+    "label": "Last Sync Date/Time",
+    "mandatory_depends_on": "eval:doc.enable_zencart",
+    "read_only": 1
+ },
   {
    "fieldname": "section_break_22",
    "fieldtype": "Section Break"
@@ -190,12 +203,7 @@
    "fieldtype": "Section Break",
    "label": "Inventory Sync"
   },
-  {
-   "default": "0",
-   "fieldname": "update_erpnext_stock_levels_to_zencart",
-   "fieldtype": "Check",
-   "label": "Update ERPNext stock levels to zencart"
-  },
+
   {
    "default": "0",
    "fieldname": "is_old_data_migrated",
@@ -259,12 +267,7 @@
    "fieldtype": "Check",
    "label": "Sync New Items as Active"
   },
-  {
-   "default": "0",
-   "fieldname": "add_shipping_as_item",
-   "fieldtype": "Check",
-   "label": "Add Shipping Charge as an Item in Order"
-  },
+
   {
    "depends_on": "add_shipping_as_item",
    "fieldname": "shipping_item",

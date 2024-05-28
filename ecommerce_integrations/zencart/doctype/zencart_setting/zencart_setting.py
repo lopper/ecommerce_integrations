@@ -15,6 +15,7 @@ from ecommerce_integrations.controllers.setting import (
 )
 from ecommerce_integrations.zencart.constants import (
 	CUSTOMER_ID_FIELD,
+	ORDER_ID_FIELD
 
 )
 
@@ -23,9 +24,7 @@ class ZencartSetting(SettingController):
 		return bool(self.enable_zencart)
 
 	def validate(self):
-
-		if self.zencart_url:
-			self.zencart_url = self.zencart_url.replace("https://", "")
+		
 		self._initalize_default_values()
 
 		if self.is_enabled():
@@ -45,7 +44,17 @@ def setup_custom_fields():
 		"Customer": [
 			dict(
 				fieldname=CUSTOMER_ID_FIELD,
-				label="zencart Customer Id",
+				label="Zencart Customer Id",
+				fieldtype="Data",
+				insert_after="series",
+				read_only=1,
+				print_hide=1,
+			)
+		],
+		"Sales Order": [
+			dict(
+				fieldname=ORDER_ID_FIELD,
+				label="Zencart Order Id",
 				fieldtype="Data",
 				insert_after="series",
 				read_only=1,
@@ -53,6 +62,16 @@ def setup_custom_fields():
 			)
 		],
 		
+		"Sales Invoice": [
+			dict(
+				fieldname=ORDER_ID_FIELD,
+				label="Zencart Order Id",
+				fieldtype="Data",
+				insert_after="series",
+				read_only=1,
+				print_hide=1,
+			)
+		],
 	}
 
 	create_custom_fields(custom_fields)

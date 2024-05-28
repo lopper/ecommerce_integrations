@@ -1,0 +1,27 @@
+{
+    "id": "29228",
+    "name": "John Smith",
+    "company": "Wooddeer Enterprises, LLC",
+    "cemail_address": "j@woodeer.com",
+    "telephone": "1082078913",
+    "delivery_address": {
+            "name": "John Smith",
+            "company": "Wooddeer Enterprises, LLC",
+            "street_address": "8200 Peatflat Dr.",
+            "suburb": "",
+            "city": "Tehachapi",
+            "postcode": "93561",
+            "state": "California",
+            "country": "United States"
+    },
+    "billing_address": {
+            "name": "John Smith",
+            "company": "Wooddeer Enterprises, LLC",
+            "street_address": "8203 Peatflat Dr.",
+            "suburb": "",
+            "city": "Tehachapi",
+            "postcode": "93562",
+            "state": "California",
+            "country": "United States"
+    }
+}
