@@ -219,9 +219,13 @@ def get_sales_order(order_id):
 @frappe.whitelist()
 def sync_recent_orders():
 	zencart_setting = frappe.get_cached_doc(SETTING_DOCTYPE)
+	if not cint(zencart_setting.enable_zencart):
+		return
+
+	zencart_setting = frappe.get_cached_doc(SETTING_DOCTYPE)
 	
 	now = datetime.now()
-	past_time = now - timedelta(hours=48)
+	past_time = now - timedelta(hours=4)
 	orders = query_zencart_sales_orders(
 			zencart_setting.zencart_url,
 			zencart_setting.password,
