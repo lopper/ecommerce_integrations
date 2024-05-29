@@ -48,7 +48,7 @@ class ZencartCustomer(EcommerceCustomer):
 		self.create_customer(customer_name, customer_group)
 
 		billing_address = customer.get("billing_address", {})
-		shipping_address = customer.get("delivery_address", {})
+		shipping_address = customer.get("shipping_address", {})
 
 		if billing_address:
 			self.create_customer_address(
