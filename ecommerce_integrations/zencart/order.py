@@ -27,9 +27,9 @@ def sync_sales_order(payload, request_id=None):
 	#frappe.set_user("Administrator")
 	frappe.flags.request_id = request_id
 
-	if frappe.db.get_value("Sales Order", filters={ORDER_ID_FIELD: cstr(order.get("id"))}):
+	if frappe.db.get_value("Sales Order", filters={ORDER_ID_FIELD: cstr(order.get("order_id"))}):
 		create_zencart_log(status="Invalid", message="Sales order already exists, not synced")
-		return
+		return False
 	try:		
 		zencart_customer = order.get("customer") if order.get("customer") is not None else {}
 		zencart_customer["billing_address"] = order.get("billing_address", "")
@@ -46,11 +46,13 @@ def sync_sales_order(payload, request_id=None):
 		#create_items_if_not_exist(order)
 
 		setting = frappe.get_doc(SETTING_DOCTYPE)
-		create_order(order, setting)
+		create_order(order, setting)		
 	except Exception as e:
 		create_zencart_log(status="Error", exception=e, rollback=True)
+		return False
 	else:
 		create_zencart_log(status="Success")
+		return True
 
 
 def create_order(order, setting, company=None):
@@ -219,22 +221,29 @@ def sync_recent_orders():
 	zencart_setting = frappe.get_cached_doc(SETTING_DOCTYPE)
 	
 	now = datetime.now()
-	past_time = now - timedelta(hours=50)
+	past_time = now - timedelta(hours=48)
 	orders = query_zencart_sales_orders(
 			zencart_setting.zencart_url,
 			zencart_setting.password,
 			past_time, 
 			now)
+	successfulImports = 0
+	skippedImports = 0
 	for order in orders:
-		log = create_zencart_log(
-			method=EVENT_MAPPER["orders/create"], request_data=json.dumps(order), make_new=True
-		)
-		sync_sales_order(order, request_id=log.name)
+		if frappe.db.get_value("Sales Order", filters={ORDER_ID_FIELD: cstr(order.get("order_id"))}):
+			print(f"Order {order.get('id')} already exists, not synced")
+			skippedImports += 1
+		else:
+			log = create_zencart_log(
+				method=EVENT_MAPPER["orders/create"], request_data=json.dumps(order), make_new=True
+			)
+			sync_sales_order(order, request_id=log.name)
+			successfulImports += 1
 
 	zencart_setting = frappe.get_doc(SETTING_DOCTYPE)
 	zencart_setting.last_sync_date = now
 	zencart_setting.save()
-	return f"Success sync {len(orders)} orders."
+	return f"Success, imported {successfulImports} recent orders and skipped {skippedImports}."
 
 @frappe.whitelist()
 def sync_old_orders():
@@ -248,16 +257,23 @@ def sync_old_orders():
 			zencart_setting.old_orders_from, 
 			zencart_setting.old_orders_to)
 
+	successfulImports = 0
+	skippedImports = 0
 	for order in orders:
-		log = create_zencart_log(
-			method=EVENT_MAPPER["orders/create"], request_data=json.dumps(order), make_new=True
-		)
-		sync_sales_order(order, request_id=log.name)
+		if frappe.db.get_value("Sales Order", filters={ORDER_ID_FIELD: cstr(order.get("order_id"))}):
+			print(f"Order {order.get('order_id')} already exists, not synced")
+			skippedImports += 1
+		else:
+			log = create_zencart_log(
+				method=EVENT_MAPPER["orders/create"], request_data=json.dumps(order), make_new=True
+			)
+			sync_sales_order(order, request_id=log.name)
+			successfulImports += 1
 
-	zencart_setting = frappe.get_doc(SETTING_DOCTYPE)
-	zencart_setting.sync_old_orders = 0
-	zencart_setting.save()
-	return f"Success sync {len(orders)} old orders."
+	#zencart_setting = frappe.get_doc(SETTING_DOCTYPE)
+	#zencart_setting.sync_old_orders = 0
+	#zencart_setting.save()
+	return f"Success, imported {successfulImports} recent orders and skipped {skippedImports}."
 
 
 def query_zencart_sales_orders(url, api_key, start_date, end_date):
