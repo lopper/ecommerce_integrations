@@ -234,6 +234,7 @@ def sync_recent_orders():
 	zencart_setting = frappe.get_doc(SETTING_DOCTYPE)
 	zencart_setting.last_sync_date = now
 	zencart_setting.save()
+	return f"Success sync {len(orders)} orders."
 
 @frappe.whitelist()
 def sync_old_orders():
@@ -256,6 +257,7 @@ def sync_old_orders():
 	zencart_setting = frappe.get_doc(SETTING_DOCTYPE)
 	zencart_setting.sync_old_orders = 0
 	zencart_setting.save()
+	return f"Success sync {len(orders)} old orders."
 
 
 def query_zencart_sales_orders(url, api_key, start_date, end_date):
