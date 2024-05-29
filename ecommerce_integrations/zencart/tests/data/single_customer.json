@@ -4,7 +4,7 @@
     "company": "Wooddeer Enterprises, LLC",
     "cemail_address": "j@woodeer.com",
     "telephone": "1082078913",
-    "delivery_address": {
+    "shipping_address": {
             "name": "John Smith",
             "company": "Wooddeer Enterprises, LLC",
             "street_address": "8200 Peatflat Dr.",
