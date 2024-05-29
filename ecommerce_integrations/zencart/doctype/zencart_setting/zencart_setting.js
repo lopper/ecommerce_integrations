@@ -23,10 +23,17 @@ frappe.ui.form.on("Zencart Setting", {
 			});
 		});
 		frm.add_custom_button(__("Import Old Olders"), () => {
+			let dialog = frappe.msgprint({
+				message: __("Importing Old Orders..."),
+				title: __("Please Wait"),
+				indicator: true,  // Show a spinning indicator
+			});
+
 			frappe.call({
 				method: "ecommerce_integrations.zencart.order.sync_old_orders",
 				callback: function (r) {
 					// show  r.message
+					dialog.hide();
 					frappe.msgprint(r.message);
 				},
 			});

@@ -20,6 +20,7 @@
   "company",
   "cash_bank_account",
   "column_break_19",
+  "mode_of_payment",
   "cost_center",
   "section_break_25",
   "sales_order_series",
@@ -137,6 +138,13 @@
    "fieldname": "column_break_19",
    "fieldtype": "Column Break"
   },
+  {
+    "fieldname": "mode_of_payment",
+    "fieldtype": "Link",
+    "label": "Mode of Payment",
+    "mandatory_depends_on": "eval:doc.enable_zencart",
+    "options": "Mode of Payment"
+   },
   {
    "fieldname": "cost_center",
    "fieldtype": "Link",
