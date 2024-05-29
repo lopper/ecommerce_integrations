@@ -270,9 +270,9 @@ def sync_old_orders():
 			sync_sales_order(order, request_id=log.name)
 			successfulImports += 1
 
-	#zencart_setting = frappe.get_doc(SETTING_DOCTYPE)
-	#zencart_setting.sync_old_orders = 0
-	#zencart_setting.save()
+	zencart_setting = frappe.get_doc(SETTING_DOCTYPE)
+	zencart_setting.sync_old_orders = 0
+	zencart_setting.save()
 	return f"Success, imported {successfulImports} recent orders and skipped {skippedImports}."
 
 
