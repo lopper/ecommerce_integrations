@@ -13,8 +13,7 @@ def prepare_sales_invoice(payload, request_id=None):
 	from ecommerce_integrations.zencart.order import get_sales_order
 
 	order = payload
-
-	frappe.set_user("Administrator")
+	#frappe.set_user("Administrator")
 	setting = frappe.get_doc(SETTING_DOCTYPE)
 	frappe.flags.request_id = request_id
 
