@@ -93,7 +93,7 @@ def create_sales_order(zencart_order, setting, company=None):
 			{
 				"doctype": "Sales Order",
 				"naming_series": setting.sales_order_series or "SO-Zencart-",
-				"po_num": "Zencart-" + zencart_order.get("order_id"),
+				"po_no": "Zencart-" + zencart_order.get("order_id"),
 				ORDER_ID_FIELD: str(zencart_order.get("order_id")),
 				"customer": customer,
 				"transaction_date": getdate(zencart_order.get("date_purchased")) or nowdate(),
