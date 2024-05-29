@@ -3,6 +3,7 @@ from typing import Any, Dict, Optional
 import frappe
 from frappe import _
 from frappe.utils import cstr, validate_phone_number
+from frappe.utils.nestedset import get_root_of
 
 from ecommerce_integrations.controllers.customer import EcommerceCustomer
 from ecommerce_integrations.zencart.constants import (
@@ -14,9 +15,27 @@ from ecommerce_integrations.zencart.constants import (
 
 class ZencartCustomer(EcommerceCustomer):
 	def __init__(self, customer_id: str):
+		self.customer_id = customer_id
 		self.setting = frappe.get_doc(SETTING_DOCTYPE)
 		super().__init__(customer_id, CUSTOMER_ID_FIELD, MODULE_NAME)
 
+	def create_customer(self, customer_name, customer_group):
+		customer = frappe.get_doc(
+			{
+				"doctype": "Customer",
+				"name": self.customer_id,
+				CUSTOMER_ID_FIELD: self.customer_id,
+				"customer_name": customer_name,
+				"customer_group": customer_group,
+				"dn_required" : 1, # dont' require delivery note for invoice creation
+				"territory": get_root_of("Territory"),
+				"customer_type": _("Individual"),
+			}
+		)
+
+		customer.flags.ignore_mandatory = True
+		customer.insert(ignore_permissions=True)
+		
 	def sync_customer(self, customer: Dict[str, Any]) -> None:
 		"""Create Customer in ERPNext using zencart's Customer dict."""
 
@@ -25,7 +44,8 @@ class ZencartCustomer(EcommerceCustomer):
 		if len(customer_name.strip()) == 0:
 			customer_name = customer.get("name")
 		
-		super().sync_customer(customer_name, customer_group)
+		#super().sync_customer(customer_name, customer_group)
+		self.create_customer(customer_name, customer_group)
 
 		billing_address = customer.get("billing_address", {})
 		shipping_address = customer.get("delivery_address", {})
