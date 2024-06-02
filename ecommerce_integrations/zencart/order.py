@@ -26,9 +26,9 @@ def sync_sales_order(payload, request_id=None):
 	order = payload
 	#frappe.set_user("Administrator")
 	frappe.flags.request_id = request_id
-
-	if frappe.db.get_value("Sales Order", filters={ORDER_ID_FIELD: cstr(order.get("order_id"))}):
-		create_zencart_log(status="Invalid", message="Sales order already exists, not synced")
+	order_id = cstr(order.get("order_id")
+	if frappe.db.get_value("Sales Order", filters={ORDER_ID_FIELD: order_id}):
+		create_zencart_log(status="Invalid", message=f"Sales order {order_id} already exists, not synced")
 		return False
 	try:		
 		zencart_customer = order.get("customer") if order.get("customer") is not None else {}
@@ -51,7 +51,7 @@ def sync_sales_order(payload, request_id=None):
 		create_zencart_log(status="Error", exception=e, rollback=True)
 		return False
 	else:
-		create_zencart_log(status="Success")
+		create_zencart_log(status="Success", , message=f"Sales order {order_id} synced")
 		return True
 
 
