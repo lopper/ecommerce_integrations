@@ -34,6 +34,8 @@ def create_sales_invoice(zencart_order, setting, so):
 		and so.docstatus == 1
 		and not so.per_billed
 	):
+		payment_module_code = zencart_order.get("payment_module_code")
+			
 		posting_date = getdate(zencart_order.get("date_purchased")) or nowdate()
 		sales_invoice = make_sales_invoice(so.name, ignore_permissions=True)
 		sales_invoice.set(ORDER_ID_FIELD, str(zencart_order.get("order_id")))
@@ -46,7 +48,7 @@ def create_sales_invoice(zencart_order, setting, so):
 		sales_invoice.insert(ignore_mandatory=True)
 		sales_invoice.submit()
 		if sales_invoice.grand_total > 0:
-			make_payament_entry_against_sales_invoice(sales_invoice, setting, posting_date)
+			make_payament_entry_against_sales_invoice(sales_invoice, setting, posting_date, payment_module_code)
 
 
 
@@ -55,11 +57,21 @@ def set_cost_center(items, cost_center):
 		item.cost_center = cost_center
 
 
-def make_payament_entry_against_sales_invoice(doc, setting, posting_date=None):
+def make_payament_entry_against_sales_invoice(doc, setting, posting_date=None, payment_module_code=None):
 	from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
 
-	payment_entry = get_payment_entry(doc.doctype, doc.name, bank_account=setting.cash_bank_account)
-	payment_entry.mode_of_payment = setting.mode_of_payment
+	# try to get payment mappings in settings
+	payment_mappings = setting.payment_mappings
+	cash_bank_account = setting.default_cash_bank_account
+	mode_of_payment = setting.default_mode_of_payment
+	# check for payment_module_code in payment_mappings
+	for payment_mapping in payment_mappings:
+		if payment_mapping.zencart_payment_module_code == payment_module_code:
+			cash_bank_account = payment_mapping.cash_bank_account
+			mode_of_payment = payment_mapping.mode_of_payment
+			break
+	payment_entry = get_payment_entry(doc.doctype, doc.name, bank_account=cash_bank_account)
+	payment_entry.mode_of_payment = mode_of_payment
 	# company bank account
 	payment_entry.flags.ignore_mandatory = True
 	payment_entry.reference_no = doc.name

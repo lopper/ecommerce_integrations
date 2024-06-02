@@ -11,28 +11,23 @@
   "zencart_url",
   "column_break_3",
   "password",
-  "section_break_4",
   "customer_settings_section",
-  "default_customer",
   "column_break_14",
   "customer_group",
   "company_dependent_settings_section",
   "company",
-  "cash_bank_account",
+  "default_mode_of_payment",
   "column_break_19",
-  "mode_of_payment",
   "cost_center",
+  "default_cash_bank_account",
+  "section_break_2ac4z",
+  "payment_mappings",
   "section_break_25",
   "sales_order_series",
   "sales_invoice_series",
   "shipping_item",
-  "column_break_27",
-  "sync_sales_invoice",
-  "add_shipping_as_item",
-  "consolidate_taxes",
   "section_break_22",
   "html_16",
-  "taxes",
   "section_break_zeoy",
   "default_sales_tax_account",
   "column_break_qibo",
@@ -44,7 +39,6 @@
   "sync_new_item_as_active",
   "inventory_sync_section",
   "warehouse",
-  "update_erpnext_stock_levels_to_zencart",
   "inventory_sync_frequency",
   "sync_old_orders_section",
   "sync_old_orders",
@@ -52,7 +46,8 @@
   "old_orders_from",
   "old_orders_to",
   "is_old_data_migrated",
-  "last_inventory_sync"
+  "last_inventory_sync",
+  "last_sync_date"
  ],
  "fields": [
   {
@@ -88,7 +83,6 @@
    "label": "Password / Access Token",
    "mandatory_depends_on": "eval:doc.enable_zencart"
   },
-
   {
    "fieldname": "customer_settings_section",
    "fieldtype": "Section Break",
@@ -110,7 +104,6 @@
    "mandatory_depends_on": "eval:doc.enable_zencart",
    "options": "Warehouse"
   },
-
   {
    "fieldname": "column_break_14",
    "fieldtype": "Column Break"
@@ -128,10 +121,9 @@
    "options": "Company"
   },
   {
-   "fieldname": "cash_bank_account",
+   "fieldname": "default_cash_bank_account",
    "fieldtype": "Link",
-   "label": "Cash/Bank Account",
-   "mandatory_depends_on": "eval:doc.enable_zencart",
+   "label": "Default Cash/Bank Account",
    "options": "Account"
   },
   {
@@ -139,12 +131,11 @@
    "fieldtype": "Column Break"
   },
   {
-    "fieldname": "mode_of_payment",
-    "fieldtype": "Link",
-    "label": "Mode of Payment",
-    "mandatory_depends_on": "eval:doc.enable_zencart",
-    "options": "Mode of Payment"
-   },
+   "fieldname": "default_mode_of_payment",
+   "fieldtype": "Link",
+   "label": "Default Mode of Payment",
+   "options": "Mode of Payment"
+  },
   {
    "fieldname": "cost_center",
    "fieldtype": "Link",
@@ -158,23 +149,23 @@
    "label": "Order Sync Settings"
   },
   {
-    "fieldname": "sales_order_series",
-    "fieldtype": "Select",
-    "label": "Sales Order Series",
-    "mandatory_depends_on": "eval:doc.enable_zencart"
- },
- {
-    "fieldname": "sales_invoice_series",
-    "fieldtype": "Select",
-    "label": "Sales Invoice Series",
-    "mandatory_depends_on": "eval:doc.enable_zencart"
- },
- {
-    "fieldname": "last_sync_date",
-    "fieldtype": "Data",
-    "label": "Last Sync Date/Time",
-    "read_only": 1
- },
+   "fieldname": "sales_order_series",
+   "fieldtype": "Select",
+   "label": "Sales Order Series",
+   "mandatory_depends_on": "eval:doc.enable_zencart"
+  },
+  {
+   "fieldname": "sales_invoice_series",
+   "fieldtype": "Select",
+   "label": "Sales Invoice Series",
+   "mandatory_depends_on": "eval:doc.enable_zencart"
+  },
+  {
+   "fieldname": "last_sync_date",
+   "fieldtype": "Data",
+   "label": "Last Sync Date/Time",
+   "read_only": 1
+  },
   {
    "fieldname": "section_break_22",
    "fieldtype": "Section Break"
@@ -184,7 +175,6 @@
    "fieldtype": "HTML",
    "options": "Map zencart Taxes / Shipping Charges to ERPNext Account"
   },
-
   {
    "fieldname": "erpnext_to_zencart_sync_section",
    "fieldtype": "Section Break",
@@ -203,14 +193,11 @@
    "fieldtype": "Check",
    "label": "Update zencart Item after updating ERPNext item"
   },
-
-
   {
    "fieldname": "inventory_sync_section",
    "fieldtype": "Section Break",
    "label": "Inventory Sync"
   },
-
   {
    "default": "0",
    "fieldname": "is_old_data_migrated",
@@ -267,14 +254,12 @@
    "fieldname": "column_break_34",
    "fieldtype": "Column Break"
   },
-
   {
    "default": "0",
    "fieldname": "sync_new_item_as_active",
    "fieldtype": "Check",
    "label": "Sync New Items as Active"
   },
-
   {
    "depends_on": "add_shipping_as_item",
    "fieldname": "shipping_item",
@@ -283,7 +268,6 @@
    "mandatory_depends_on": "add_shipping_as_item",
    "options": "Item"
   },
-
   {
    "description": "When no sales tax mapping is found this tax account will be used as the default account. This is only applied for Sales Tax. Any shipping related charges still need to be mapped separately.",
    "fieldname": "default_sales_tax_account",
@@ -306,12 +290,23 @@
    "fieldtype": "Link",
    "label": "Default Shipping Charges Account",
    "options": "Account"
+  },
+  {
+   "description": "The followings maps the zencart payment module code to the erpnext mode of payment and cash account.",
+   "fieldname": "payment_mappings",
+   "fieldtype": "Table",
+   "label": "Payment Mappings",
+   "options": "Zencart Payment Mapping"
+  },
+  {
+   "fieldname": "section_break_2ac4z",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-10-24 10:38:49.247431",
+ "modified": "2024-06-01 16:28:25.266110",
  "modified_by": "Administrator",
  "module": "Zencart",
  "name": "Zencart Setting",
