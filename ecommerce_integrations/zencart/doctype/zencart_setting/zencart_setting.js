@@ -23,17 +23,19 @@ frappe.ui.form.on("Zencart Setting", {
 			});
 		});
 		frm.add_custom_button(__("Import Old Olders"), () => {
-			let dialog = frappe.msgprint({
-				message: __("Importing Old Orders..."),
-				title: __("Please Wait"),
-				indicator: true,  // Show a spinning indicator
-			});
-
+			// check if the doc has sync_old_orders_checked
+			if (!frm.doc.sync_old_orders) {
+				frappe.msgprint("Please enable syncing old orders and set the date range to import.");
+				return
+			}
+			// check if 	
 			frappe.call({
 				method: "ecommerce_integrations.zencart.order.sync_old_orders",
+				freeze: true,  // This will freeze the UI
+				freeze_message: "Loading, please wait...",  // Optional: Customize the freeze message
 				callback: function (r) {
 					// show  r.message
-					dialog.hide();
+					frappe.hide_msgprint();
 					frappe.msgprint(r.message);
 				},
 			});
