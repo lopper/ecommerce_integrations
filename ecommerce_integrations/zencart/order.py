@@ -26,7 +26,7 @@ def sync_sales_order(payload, request_id=None):
 	order = payload
 	#frappe.set_user("Administrator")
 	frappe.flags.request_id = request_id
-	order_id = cstr(order.get("order_id")
+	order_id = cstr(order.get("order_id"))
 	if frappe.db.get_value("Sales Order", filters={ORDER_ID_FIELD: order_id}):
 		create_zencart_log(status="Invalid", message=f"Sales order {order_id} already exists, not synced")
 		return False
