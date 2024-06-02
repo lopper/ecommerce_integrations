@@ -51,7 +51,7 @@ def sync_sales_order(payload, request_id=None):
 		create_zencart_log(status="Error", exception=e, rollback=True)
 		return False
 	else:
-		create_zencart_log(status="Success", , message=f"Sales order {order_id} synced")
+		create_zencart_log(status="Success", message=f"Sales order {order_id} synced")
 		return True
 
 
