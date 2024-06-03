@@ -228,7 +228,7 @@ def sync_recent_orders():
 	hours_back = min(hours_back, 48)
 
 	now = datetime.now()
-	past_time = now - timedelta(hours=zencart_setting.hours_bank)
+	past_time = now - timedelta(hours=hours_back)
 	orders = query_zencart_sales_orders(
 			zencart_setting.zencart_url,
 			zencart_setting.password,
@@ -251,7 +251,7 @@ def sync_recent_orders():
 	zencart_setting = frappe.get_doc(SETTING_DOCTYPE)
 	zencart_setting.last_sync_date = now
 	zencart_setting.save()
-	return f"Success, imported {successfulImports} recent orders and skipped {skippedImports}."
+	return f"Success, imported {successfulImports} recent orders between {past_time} and {now}. {skippedImports} orders were skipped because they are already imported."
 
 @frappe.whitelist()
 def sync_old_orders():
@@ -280,7 +280,7 @@ def sync_old_orders():
 	zencart_setting = frappe.get_doc(SETTING_DOCTYPE)
 	zencart_setting.sync_old_orders = 0
 	zencart_setting.save()
-	return f"Success, imported {successfulImports} recent orders and skipped {skippedImports}."
+	return f"Success, imported {successfulImports} orders between {zencart_setting.old_orders_from} and {zencart_setting.old_orders_to}. {skippedImports} orders were skipped because they are already imported."
 
 
 def query_zencart_sales_orders(url, api_key, start_date, end_date):
