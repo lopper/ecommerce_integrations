@@ -221,11 +221,14 @@ def sync_recent_orders():
 	zencart_setting = frappe.get_cached_doc(SETTING_DOCTYPE)
 	if not cint(zencart_setting.enable_zencart):
 		return
+	hours_back = zencart_setting.hours_bank
+	if not hours_back:
+		hours_back = 12
 
-	zencart_setting = frappe.get_cached_doc(SETTING_DOCTYPE)
-	
+	hours_back = min(hours_back, 48)
+
 	now = datetime.now()
-	past_time = now - timedelta(hours=12)
+	past_time = now - timedelta(hours=zencart_setting.hours_bank)
 	orders = query_zencart_sales_orders(
 			zencart_setting.zencart_url,
 			zencart_setting.password,
