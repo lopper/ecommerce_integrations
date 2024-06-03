@@ -46,7 +46,7 @@ def setup_custom_fields():
 				fieldname=CUSTOMER_ID_FIELD,
 				label="Zencart Customer Id",
 				fieldtype="Data",
-				insert_after="series",
+				insert_after="naming_series",
 				read_only=1,
 				print_hide=1,
 			)
@@ -56,7 +56,7 @@ def setup_custom_fields():
 				fieldname=ORDER_ID_FIELD,
 				label="Zencart Order Id",
 				fieldtype="Data",
-				insert_after="series",
+				insert_after="naming_series",
 				read_only=1,
 				print_hide=1,
 			)
@@ -67,7 +67,7 @@ def setup_custom_fields():
 				fieldname=ORDER_ID_FIELD,
 				label="Zencart Order Id",
 				fieldtype="Data",
-				insert_after="series",
+				insert_after="naming_series",
 				read_only=1,
 				print_hide=1,
 			)
