@@ -225,12 +225,13 @@ def sync_recent_orders():
 	zencart_setting = frappe.get_cached_doc(SETTING_DOCTYPE)
 	
 	now = datetime.now()
-	past_time = now - timedelta(hours=4)
+	past_time = now - timedelta(hours=12)
 	orders = query_zencart_sales_orders(
 			zencart_setting.zencart_url,
 			zencart_setting.password,
 			past_time, 
 			now)
+
 	successfulImports = 0
 	skippedImports = 0
 	for order in orders:
@@ -260,7 +261,6 @@ def sync_old_orders():
 			zencart_setting.password,
 			zencart_setting.old_orders_from, 
 			zencart_setting.old_orders_to)
-
 	successfulImports = 0
 	skippedImports = 0
 	for order in orders:
@@ -282,9 +282,10 @@ def sync_old_orders():
 
 def query_zencart_sales_orders(url, api_key, start_date, end_date):
 	start_date = get_datetime(start_date).astimezone()
-	start_date = start_date.strftime('%Y-%m-%d')
+	start_date = start_date.strftime('%Y-%m-%d %H:%M:%S')
+
 	end_date = get_datetime(end_date).astimezone()
-	end_date = end_date.strftime('%Y-%m-%d')
+	end_date = end_date.strftime('%Y-%m-%d %H:%M:%S')
 
 	params = {
 		'start_date': start_date,
