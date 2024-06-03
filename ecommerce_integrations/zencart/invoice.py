@@ -74,7 +74,7 @@ def make_payament_entry_against_sales_invoice(doc, setting, posting_date=None, p
 	payment_entry.mode_of_payment = mode_of_payment
 	# company bank account
 	payment_entry.flags.ignore_mandatory = True
-	payment_entry.reference_no = doc.name
+	payment_entry.reference_no = doc.zencart_order_id
 	payment_entry.posting_date = posting_date or nowdate()
 	payment_entry.reference_date = posting_date or nowdate()
 	payment_entry.insert(ignore_permissions=True)
