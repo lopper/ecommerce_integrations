@@ -14,6 +14,8 @@
   "customer_settings_section",
   "column_break_14",
   "customer_group",
+  "hourly_import_section",
+  "recent_orders_hours",
   "company_dependent_settings_section",
   "company",
   "default_mode_of_payment",
@@ -209,12 +211,12 @@
    "default": "0",
    "fieldname": "sync_old_orders",
    "fieldtype": "Check",
-   "label": "Sync Old Orders"
+   "label": "Import Old Orders"
   },
   {
    "fieldname": "sync_old_orders_section",
    "fieldtype": "Section Break",
-   "label": "Sync Old Orders"
+   "label": "Import Old Orders"
   },
   {
    "depends_on": "eval:doc.sync_old_orders",
@@ -301,12 +303,25 @@
   {
    "fieldname": "section_break_2ac4z",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "hourly_import_section",
+   "fieldtype": "Section Break",
+   "label": "Hourly Import (Recent Orders)"
+  },
+  {
+   "description": "Number of hours back to download sales orders for import. This import is run every hour when zencart is enabled.",
+   "fieldname": "recent_orders_hours",
+   "fieldtype": "Data",
+   "label": "Hours Back",
+   "options": "12",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-06-01 16:28:25.266110",
+ "modified": "2024-06-03 13:31:55.567642",
  "modified_by": "Administrator",
  "module": "Zencart",
  "name": "Zencart Setting",
