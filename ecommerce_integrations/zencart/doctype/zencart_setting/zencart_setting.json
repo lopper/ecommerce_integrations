@@ -312,7 +312,7 @@
   {
    "description": "Number of hours back to download sales orders for import. This import is run every hour when zencart is enabled.",
    "fieldname": "hours_back",
-   "fieldtype": "Data",
+   "fieldtype": "Int",
    "label": "Hours Back",
    "options": "12",
    "reqd": 1
@@ -321,7 +321,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-06-03 13:33:35.155669",
+ "modified": "2024-06-03 13:56:48.409512",
  "modified_by": "Administrator",
  "module": "Zencart",
  "name": "Zencart Setting",
