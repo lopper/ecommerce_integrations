@@ -221,7 +221,7 @@ def sync_recent_orders():
 	zencart_setting = frappe.get_cached_doc(SETTING_DOCTYPE)
 	if not cint(zencart_setting.enable_zencart):
 		return
-	hours_back = zencart_setting.hours_bank
+	hours_back = zencart_setting.hours_back
 	if not hours_back:
 		hours_back = 12
 
