@@ -40,6 +40,21 @@ frappe.ui.form.on("Zencart Setting", {
 				},
 			});
 		});
+
+		frm.add_custom_button(__("Import Recent Olders"), () => {
+
+			// check if 	
+			frappe.call({
+				method: "ecommerce_integrations.zencart.order.sync_recent_orders",
+				freeze: true,  // This will freeze the UI
+				freeze_message: "Loading, please wait...",  // Optional: Customize the freeze message
+				callback: function (r) {
+					// show  r.message
+					frappe.hide_msgprint();
+					frappe.msgprint(r.message);
+				},
+			});
+		});
 		frm.trigger("setup_queries");
 	},
 
