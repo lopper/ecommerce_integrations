@@ -34,6 +34,7 @@
   "default_sales_tax_account",
   "column_break_qibo",
   "default_shipping_charges_account",
+  "default_incoterm",
   "erpnext_to_zencart_sync_section",
   "upload_erpnext_items",
   "update_zencart_item_on_update",
@@ -293,6 +294,12 @@
    "label": "Default Shipping Charges Account",
    "options": "Account"
   },
+  {
+    "fieldname": "default_incoterm",
+    "fieldtype": "Link",
+    "label": "Default Incoterm",
+    "options": "Incoterm"
+   },
   {
    "description": "The followings maps the zencart payment module code to the erpnext mode of payment and cash account.",
    "fieldname": "payment_mappings",
