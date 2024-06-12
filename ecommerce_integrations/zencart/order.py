@@ -99,6 +99,8 @@ def create_sales_order(zencart_order, setting, company=None):
 				"po_date": getdate(zencart_order.get("date_purchased")) or nowdate(),
 				ORDER_ID_FIELD: str(zencart_order.get("order_id")),
 				"customer": customer,
+				"incoterm": setting.default_incoterm,
+				"named_place": zencart_order.get("shipping_method"),
 				"transaction_date": getdate(zencart_order.get("date_purchased")) or nowdate(),
 				"delivery_date": getdate(zencart_order.get("date_purchased")) or nowdate(),
 				"company": setting.company,
