@@ -159,6 +159,7 @@ def get_order_items(order_items, setting, delivery_date):
 				"delivery_date": delivery_date,
 				"qty": zencart_item.get("quantity"),
 				"stock_uom": zencart_item.get("uom") or "Each",
+				"uom": zencart_item.get("uom") or "Each",
 				"warehouse": setting.warehouse
 			}
 		)
